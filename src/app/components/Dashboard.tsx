@@ -13,19 +13,10 @@ import {
 } from '../config/industryConfig';
 import { TOPIC_VIEWS, ALL_TOPICS, type TopicKey } from '../config/topicRegistry';
 import { OverviewRadar } from './topics/shared/OverviewRadar';
-import { RiskMatrix } from './topics/shared/RiskMatrix';
 import { ValueChainFlow } from './topics/shared/ValueChainFlow';
 import { GeoDensityMap } from './topics/shared/GeoDensityMap';
-import { OVERVIEW_SCORES, RISK_ITEMS } from '../data/mockCharts';
+import { OVERVIEW_SCORES } from '../data/mockCharts';
 import { getIndustryLandscape } from '../data/mockIndustryLandscape';
-
-const TOPIC_COLOR: Record<string, string> = {
-  'Tax': '#4B286D',
-  'Compliance': '#06B6D4',
-  'Employment Law': '#10B981',
-  'Data Privacy': '#F59E0B',
-  'Regulatory Requirement': '#EF4444',
-};
 
 interface DashboardProps {
   formData: FormData;
@@ -348,8 +339,7 @@ interface Tab1OverviewProps {
 }
 
 function Tab1Overview({ topics, originLabel, targetLabel }: Tab1OverviewProps) {
-  const showRadar = topics.length >= 3;
-  const filteredRisks = RISK_ITEMS.filter((r) => topics.includes(r.topic as TopicKey));
+  if (topics.length < 3) return null;
   const originValues = topics.map((t) => OVERVIEW_SCORES[t]?.origin ?? 0);
   const targetValues = topics.map((t) => OVERVIEW_SCORES[t]?.target ?? 0);
 
@@ -360,26 +350,15 @@ function Tab1Overview({ topics, originLabel, targetLabel }: Tab1OverviewProps) {
         <span className="text-slate-700 tracking-wide uppercase text-sm">Executive Summary</span>
       </div>
 
-      <div className={`grid gap-6 ${showRadar ? 'grid-cols-2' : 'grid-cols-1'}`}>
-        {showRadar && (
-          <OverviewRadar
-            title="Cross-Topic Complexity Profile"
-            subtitle={`Regulatory density: ${originLabel} vs ${targetLabel}`}
-            axes={topics}
-            originValues={originValues}
-            targetValues={targetValues}
-            originLabel={originLabel}
-            targetLabel={targetLabel}
-          />
-        )}
-
-        <RiskMatrix
-          title="Prioritized Risk Matrix"
-          subtitle="Where to call an expert vs where AI can self-serve"
-          items={filteredRisks}
-          topicColors={TOPIC_COLOR}
-        />
-      </div>
+      <OverviewRadar
+        title="Cross-Topic Complexity Profile"
+        subtitle={`Regulatory density: ${originLabel} vs ${targetLabel}`}
+        axes={topics}
+        originValues={originValues}
+        targetValues={targetValues}
+        originLabel={originLabel}
+        targetLabel={targetLabel}
+      />
     </section>
   );
 }

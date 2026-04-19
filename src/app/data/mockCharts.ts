@@ -99,36 +99,6 @@ export const OVERVIEW_SCORES: Record<string, { origin: number; target: number }>
   'Regulatory Requirement': { origin: 45, target: 88 },
 };
 
-export interface RiskItem {
-  id: string;
-  topic: string;
-  label: string;
-  impact: number;
-  probability: number;
-}
-
-export const RISK_ITEMS: RiskItem[] = [
-  { id: 'tax-1',  topic: 'Tax',            label: 'IRA battery sourcing penalty',          impact: 85, probability: 55 },
-  { id: 'tax-2',  topic: 'Tax',            label: 'Remote-worker sales tax nexus',          impact: 55, probability: 75 },
-  { id: 'tax-3',  topic: 'Tax',            label: 'R&D credit disqualification',            impact: 45, probability: 30 },
-
-  { id: 'cmp-1',  topic: 'Compliance',     label: 'SOC 2 blocks enterprise deals',          impact: 80, probability: 70 },
-  { id: 'cmp-2',  topic: 'Compliance',     label: 'Third-party vendor risk exposure',       impact: 60, probability: 50 },
-  { id: 'cmp-3',  topic: 'Compliance',     label: 'ISO 27001 certification lapse',          impact: 40, probability: 25 },
-
-  { id: 'emp-1',  topic: 'Employment Law', label: 'AB5 worker misclassification',           impact: 82, probability: 78 },
-  { id: 'emp-2',  topic: 'Employment Law', label: 'H-1B cap denial for key hire',           impact: 55, probability: 55 },
-  { id: 'emp-3',  topic: 'Employment Law', label: 'At-will termination lawsuit',            impact: 75, probability: 28 },
-
-  { id: 'dp-1',   topic: 'Data Privacy',   label: 'GDPR-US data transfer invalidation',     impact: 90, probability: 72 },
-  { id: 'dp-2',   topic: 'Data Privacy',   label: 'CCPA class action on camera data',       impact: 82, probability: 60 },
-  { id: 'dp-3',   topic: 'Data Privacy',   label: 'BIPA biometric consent violation',       impact: 70, probability: 45 },
-
-  { id: 'reg-1',  topic: 'Regulatory Requirement', label: 'State DMV permit revocation',    impact: 88, probability: 68 },
-  { id: 'reg-2',  topic: 'Regulatory Requirement', label: 'NHTSA recall mandate',           impact: 85, probability: 40 },
-  { id: 'reg-3',  topic: 'Regulatory Requirement', label: 'FCC spectrum misuse penalty',    impact: 50, probability: 22 },
-];
-
 export const REGULATORY_NETWORK = {
   nodes: [
     { id: 'nhtsa', label: 'NHTSA',   x: 150, y: 60,  color: '#4B286D' },
