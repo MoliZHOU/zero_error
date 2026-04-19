@@ -81,24 +81,6 @@ export function LandingPage({ onComplete }: LandingPageProps) {
 
             {/* Form Fields - 2 Column Grid */}
             <div className="grid grid-cols-2 gap-6 mb-8">
-              {/* Company Name - Full Width */}
-              <div className="col-span-2">
-                <label htmlFor="companyName" className="block text-slate-700 mb-2">
-                  Company Name <span className="text-slate-500">(Optional)</span>
-                </label>
-                <input
-                  id="companyName"
-                  type="text"
-                  placeholder="e.g., Zenseact"
-                  value={formData.companyName}
-                  onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-opacity-50 transition-all"
-                  style={{ focusRingColor: '#4B286D' }}
-                  onFocus={(e) => e.target.style.borderColor = '#4B286D'}
-                  onBlur={(e) => e.target.style.borderColor = '#CBD5E1'}
-                />
-              </div>
-
               {/* Company Size */}
               <div>
                 <label htmlFor="companySize" className="block text-slate-700 mb-2">

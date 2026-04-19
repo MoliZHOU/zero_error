@@ -66,7 +66,7 @@ export const INDUSTRY_LANDSCAPE: Record<string, IndustryLandscape> = {
               detail: {
                 iconKey: 'lidar', location: 'Orlando, FL',
                 category: 'LiDAR Sensor — Tier 2', criticality: 'critical',
-                description: 'Automotive-grade 1550nm LiDAR already integrated on the Volvo EX90 platform. Existing Zenseact compatibility reduces integration risk for US deployment.',
+                description: 'Automotive-grade 1550nm LiDAR already integrated on the Volvo EX90 platform. Established perception-stack partnerships lower integration risk for US deployment.',
                 complianceAlignment: ['IATF 16949', 'ISO 26262 ASIL-B', 'FMVSS 111'],
               },
             },
@@ -177,7 +177,7 @@ export const INDUSTRY_LANDSCAPE: Record<string, IndustryLandscape> = {
               detail: {
                 iconKey: 'oem', location: 'Charleston, SC',
                 category: 'OEM Customer — Strategic', criticality: 'critical',
-                description: 'Existing strategic partner. US assembly in Charleston, SC. Zenseact already ships Volvo EX90 perception stack; Volvo holds a minority stake. Natural beachhead for US expansion.',
+                description: 'US assembly in Charleston, SC. Volvo\'s fully-electric strategy on the modular SPA2 platform has open slots for AD software partners. Natural Nordic beachhead for US expansion.',
                 complianceAlignment: ['FMVSS', 'NHTSA', 'CCPA', 'SOC 2 Type II'],
               },
             },

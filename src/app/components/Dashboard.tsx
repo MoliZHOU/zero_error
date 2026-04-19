@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ArrowRight, ArrowLeft, Download, Loader2 } from 'lucide-react';
 import html2canvas from 'html2canvas-pro';
 import jsPDF from 'jspdf';
@@ -40,6 +40,13 @@ export function Dashboard({ formData, selectedTopics, onBack }: DashboardProps) 
   const effectiveTopics = (selectedTopics.length > 0 ? selectedTopics : ALL_TOPICS).filter(
     (t): t is TopicKey => t in TOPIC_VIEWS,
   );
+
+  // Reset scroll to top when the tab changes so users land on the header, not mid-content
+  useEffect(() => {
+    if (contentRef.current) {
+      contentRef.current.scrollTop = 0;
+    }
+  }, [activeTab]);
 
   const waitForPaint = (ms = 450) =>
     new Promise<void>((resolve) =>
@@ -259,7 +266,7 @@ export function Dashboard({ formData, selectedTopics, onBack }: DashboardProps) 
             <span>{INDUSTRY_LABEL[resolved.industry]}</span>
             <span className="mx-2 text-slate-300">|</span>
             <span>{COMPANY_SIZE_LABEL[resolved.companySize]}</span>
-            {resolved.companyName && resolved.companyName !== 'Zenseact' && (
+            {resolved.companyName && (
               <>
                 <span className="mx-2 text-slate-300">|</span>
                 <span>{resolved.companyName}</span>

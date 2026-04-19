@@ -56,7 +56,7 @@ export const INDUSTRY_TAB_NAMES: Record<IndustryKey, [string, string, string]> =
 };
 
 export const DEFAULT_FORM_DATA = {
-  companyName: 'Zenseact',
+  companyName: '',
   companySize: 'enterprise' as CompanySizeKey,
   industry: 'ad-adas' as IndustryKey,
   originMarket: 'sweden' as MarketKey,

@@ -43,9 +43,10 @@ export function buildGreeting(formData: FormData, topics: string[]): string {
   const target = MARKET_LABEL[resolved.targetMarket];
   const industry = INDUSTRY_LABEL[resolved.industry];
   const company = resolved.companyName;
+  const subject = company ? `${company}'s expansion` : 'Your expansion';
 
   if (topics.length === 0) {
-    return `${company}'s expansion from ${origin} to ${target} in ${industry} involves several compliance dimensions. Select an area of concern to get started.`;
+    return `${subject} from ${origin} to ${target} in ${industry} involves several compliance dimensions. Select an area of concern to get started.`;
   }
 
   const bullets = topics
@@ -60,7 +61,7 @@ export function buildGreeting(formData: FormData, topics: string[]): string {
       ? `${bullets[0]} and ${bullets[1]}`
       : `${bullets.slice(0, -1).join(', ')}, and ${bullets[bullets.length - 1]}`;
 
-  return `${company}'s expansion from ${origin} to ${target} in ${industry} requires careful navigation of ${bulletText}. Where would you like to start?`;
+  return `${subject} from ${origin} to ${target} in ${industry} requires careful navigation of ${bulletText}. Where would you like to start?`;
 }
 
 export function buildQuickPrompts(topics: string[], max = 4): string[] {
