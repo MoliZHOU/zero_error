@@ -12,9 +12,9 @@ export function MarketingHero({ onTryIt }: MarketingHeroProps) {
   const [showTeamIntro, setShowTeamIntro] = useState(true);
 
   const teamMembers = [
-    { name: 'Mengting Wang', role: 'Interaction Design', image: 'src/assets/mengting.jpg' },
-    { name: 'Yihuai Cai', role: 'Data Science and AI', image: 'src/assets/yihuai.png' },
-    { name: 'Moli Zhou', role: 'Data Science and AI', image: 'src/assets/moli.jpg' },
+    { name: 'Mengting Wang', role: 'Interaction Design',  image: '/team/mengting.jpg' },
+    { name: 'Yihuai Cai',    role: 'Data Science and AI', image: '/team/yihuai.png' },
+    { name: 'Moli Zhou',     role: 'Data Science and AI', image: '/team/moli.jpg' },
   ];
 
   return (
