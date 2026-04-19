@@ -11,7 +11,7 @@ const initialMessages: Message[] = [
   {
     id: 1,
     role: 'ai',
-    text: "Zenseact's expansion to the US requires navigating complex state-level DMV rules. California demands strict disengagement reporting, while Texas is more permissive. How can I help map your data privacy (CCPA) needs for cloud training?",
+    text: "An autonomous driving company's expansion to the US requires navigating complex state-level DMV rules. California demands strict disengagement reporting, while Texas is more permissive. How can I help map your data privacy (CCPA) needs for cloud training?",
   },
 ];
 

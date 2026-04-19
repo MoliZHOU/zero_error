@@ -77,7 +77,7 @@ export function Dashboard() {
                 className="text-slate-900 mb-5 tracking-tight"
                 style={{ fontSize: '1.5rem', fontWeight: 600, lineHeight: 1.2 }}
               >
-                Zenseact · US Market Entry
+                Autonomous Driving Company · US Market Entry
               </h1>
 
               {/* Context bar */}

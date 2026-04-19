@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ChevronRight, Check, Shield, Globe2, FileCheck, Users } from 'lucide-react';
+import { ChevronRight, Check, Shield, Globe2, FileCheck, Users, AlertTriangle } from 'lucide-react';
 
 interface LandingPageProps {
   onComplete: () => void;
@@ -14,8 +14,10 @@ export function LandingPage({ onComplete }: LandingPageProps) {
     targetMarket: ''
   });
 
-  const [selectedTopics, setSelectedTopics] = useState<string[]>(['Data Privacy', 'Regulatory Requirement']);
-  const topics = ['Tax', 'Compliance', 'Employment Law', 'Data Privacy', 'Regulatory Requirement'];
+  const [activeHeroTab, setActiveHeroTab] = useState('Policy Comparison');
+
+  const [selectedTopics, setSelectedTopics] = useState<string[]>(['Policy Comparison', 'Partner Network']);
+  const topics = ['Policy Comparison', 'Partner Network', 'Expert Directory'];
 
   const toggleTopic = (topic: string) => {
     setSelectedTopics(prev =>
@@ -83,37 +85,54 @@ export function LandingPage({ onComplete }: LandingPageProps) {
 
           {/* Left: Copy */}
           <div>
-            <div className="flex items-center gap-3 mb-7">
-              <div className="h-[2px] w-8" style={{ backgroundColor: '#00B0B9' }} />
-              <span className="text-xs tracking-[0.18em] uppercase" style={{ color: '#00B0B9' }}>
-                AI Compliance Copilot
-              </span>
-            </div>
             <h1
               className="text-white mb-6 tracking-tight"
               style={{ fontSize: '3rem', lineHeight: '1.1', fontWeight: 600 }}
             >
-              Navigate cross-border expansion with confidence.
+              The ”invisible“ Wall
             </h1>
             <p className="text-purple-200 mb-10 leading-relaxed" style={{ fontSize: '1.05rem' }}>
-              You're building for the world, but the world has rules. Our AI maps regulatory requirements across every market you target — instantly.
+              Today, companies go global on Day 1. They sell and hire everywhere.
             </p>
-            <div className="space-y-3">
-              {[
-                'Regulatory compliance mapping',
-                'Real-time AI advisory',
-                'Enterprise-grade security',
-              ].map(feat => (
-                <div key={feat} className="flex items-center gap-3">
-                  <div
-                    className="w-5 h-5 flex items-center justify-center flex-shrink-0"
-                    style={{ backgroundColor: '#00B0B9' }}
-                  >
-                    <Check className="w-3 h-3 text-white" strokeWidth={3} />
-                  </div>
-                  <span className="text-purple-100 text-sm">{feat}</span>
+
+            <div class="relative pl-8 border-l-2 border-primary-container">
+              <p className="text-purple-200 mb-10 leading-relaxed">
+                But every new country has different rules: Tax, Compliance, Labor Laws and Data Privacy.
+              </p>
+            </div>
+
+            <p className="text-purple-200 mb-10 leading-relaxed" style={{ fontSize: '1.05rem' }}>
+              Usually, you don't see these problems. You only see them when you get a big fine or a legal letter. <span class="text-secondary font-semibold">"Ambition is fast, but understanding might be slow.</span>"
+            </p>
+
+            {/* Alert card below */}
+            <div className="flex items-center gap-6 relative z-10">
+              {/* Stats */}
+              <div className="flex gap-6">
+                <div>
+                  <p className="text-purple-300 text-xs tracking-wider uppercase mb-1">Fines</p>
+                  <p className="text-white text-3xl" style={{ fontWeight: 600 }}>$2.4M</p>
                 </div>
-              ))}
+                <div>
+                  <p className="text-purple-300 text-xs tracking-wider uppercase mb-1">Latency</p>
+                  <p className="text-white text-3xl" style={{ fontWeight: 600 }}>180d</p>
+                </div>
+              </div>
+
+              {/* Notice Card */}
+              <div
+                className="p-5 flex-1 rounded-md"
+                style={{ backgroundColor: '#1E1428', border: '1px solid rgba(255,255,255,0.08)' }}
+              >
+                <div className="flex items-center gap-2 mb-3">
+                  <AlertTriangle className="w-4 h-4 text-[#00B0B9]" strokeWidth={2} />
+                  <span className="text-white text-xs tracking-[0.1em] uppercase" style={{ fontWeight: 600 }}>Notice Received</span>
+                </div>
+                <div className="h-[2px] w-full mb-3" style={{ backgroundColor: '#00B0B9' }} />
+                <p className="text-purple-100 text-xs leading-relaxed">
+                  Compliance violation detected in APAC expansion zone. Legal action pending.
+                </p>
+              </div>
             </div>
           </div>
 
@@ -122,8 +141,8 @@ export function LandingPage({ onComplete }: LandingPageProps) {
             {/* Dot matrix decoration */}
             <div className="absolute -top-6 -right-6 opacity-20 pointer-events-none">
               <svg width="120" height="120" viewBox="0 0 120 120">
-                {[0,1,2,3,4,5].map(r => [0,1,2,3,4,5].map(c => (
-                  <circle key={`${r}-${c}`} cx={c*22+6} cy={r*22+6} r="3" fill="white" />
+                {[0, 1, 2, 3, 4, 5].map(r => [0, 1, 2, 3, 4, 5].map(c => (
+                  <circle key={`${r}-${c}`} cx={c * 22 + 6} cy={r * 22 + 6} r="3" fill="white" />
                 )))}
               </svg>
             </div>
@@ -169,6 +188,37 @@ export function LandingPage({ onComplete }: LandingPageProps) {
                   </div>
                 ))}
               </div>
+            </div>
+
+            {/* Fancy Segmented Tabs */}
+            <div
+              className="mt-8 p-1.5 flex flex-wrap lg:flex-nowrap gap-1.5 relative z-10 rounded-2xl"
+              style={{ backgroundColor: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)' }}
+            >
+              {[
+                'Policy Comparison',
+                'Partner Network',
+                'Expert Directory',
+              ].map(feat => {
+                const isActive = activeHeroTab === feat;
+                return (
+                  <button
+                    key={feat}
+                    onClick={() => setActiveHeroTab(feat)}
+                    className={`flex-1 flex items-center justify-center py-3 px-4 rounded-xl text-[13px] transition-all duration-300 ${
+                      isActive
+                        ? 'bg-white shadow-lg scale-[1.02]'
+                        : 'hover:bg-white/10 text-purple-200'
+                    }`}
+                    style={{
+                      color: isActive ? '#4B286D' : undefined,
+                      fontWeight: isActive ? 600 : 400
+                    }}
+                  >
+                    {feat}
+                  </button>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -217,7 +267,7 @@ export function LandingPage({ onComplete }: LandingPageProps) {
                   <input
                     id="companyName"
                     type="text"
-                    placeholder="e.g., Zenseact"
+                    placeholder="e.g., An Autonomous Driving Company"
                     value={formData.companyName}
                     onChange={e => setFormData({ ...formData, companyName: e.target.value })}
                     className="w-full px-4 py-3 text-sm bg-white outline-none transition-colors"
@@ -394,7 +444,7 @@ export function LandingPage({ onComplete }: LandingPageProps) {
             >
               <span className="text-white tracking-[0.22em] text-sm">BORDERLESS</span>
             </div>
-            <p className="text-purple-300 text-xs">© 2025 Grant Thornton. AI Compliance Copilot.</p>
+            <p className="text-purple-300 text-xs">© 2025 Grant Thornton.</p>
           </div>
           <div className="flex gap-6">
             {['Privacy Policy', 'Terms of Service', 'Cookie Settings'].map(link => (
