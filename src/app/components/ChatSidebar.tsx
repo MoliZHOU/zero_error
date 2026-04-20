@@ -1,153 +1,164 @@
-import { Send, Sparkles } from 'lucide-react';
-import { useState } from 'react';
+import { Send } from 'lucide-react';
+import { useMemo, useState } from 'react';
+import type { FormData } from '../config/industryConfig';
+import { buildGreeting, buildQuickPrompts, MOCK_REPLY } from '../data/mockChat';
 
-interface Message {
+interface ChatSidebarProps {
+  formData: FormData;
+  selectedTopics: string[];
+}
+
+interface ChatMessage {
   id: number;
   role: 'ai' | 'user';
   text: string;
 }
 
-const initialMessages: Message[] = [
-  {
-    id: 1,
-    role: 'ai',
-    text: "An autonomous driving company's expansion to the US requires navigating complex state-level DMV rules. California demands strict disengagement reporting, while Texas is more permissive. How can I help map your data privacy (CCPA) needs for cloud training?",
-  },
-];
+export function ChatSidebar({ formData, selectedTopics }: ChatSidebarProps) {
+  const [message, setMessage] = useState('');
+  const [isTyping, setIsTyping] = useState(false);
 
-export function ChatSidebar() {
-  const [messages, setMessages] = useState<Message[]>(initialMessages);
-  const [input, setInput] = useState('');
+  const greeting = useMemo(
+    () => buildGreeting(formData, selectedTopics),
+    [formData, selectedTopics],
+  );
+  const quickPrompts = useMemo(
+    () => buildQuickPrompts(selectedTopics),
+    [selectedTopics],
+  );
 
-  const quickPrompts = [
-    'Compare CA vs TX testing rules',
-    'Data localization laws',
-    'CCPA obligations',
-  ];
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
 
-  const handleSend = () => {
-    if (!input.trim()) return;
-    const userMsg: Message = { id: Date.now(), role: 'user', text: input };
-    const aiReply: Message = {
-      id: Date.now() + 1,
-      role: 'ai',
-      text: "I'm analysing your query against current US regulatory frameworks. This typically involves reviewing state-specific AV legislation and applicable federal data regulations. Let me prepare a detailed compliance memo for your team.",
-    };
-    setMessages(prev => [...prev, userMsg, aiReply]);
-    setInput('');
-  };
-
-  const handleKey = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handleSend();
-    }
+  const sendMessage = (text: string) => {
+    const trimmed = text.trim();
+    if (!trimmed) return;
+    const userMsg: ChatMessage = { id: Date.now(), role: 'user', text: trimmed };
+    setMessages((prev) => [...prev, userMsg]);
+    setMessage('');
+    setIsTyping(true);
+    setTimeout(() => {
+      const aiMsg: ChatMessage = {
+        id: Date.now() + 1,
+        role: 'ai',
+        text: MOCK_REPLY,
+      };
+      setMessages((prev) => [...prev, aiMsg]);
+      setIsTyping(false);
+    }, 700);
   };
 
   return (
-    <div
-      className="h-full flex flex-col bg-white"
-      style={{ fontFamily: 'Inter, sans-serif' }}
-    >
+    <div className="h-full flex flex-col bg-white border-l border-gray-200 shadow-xl">
       {/* Header */}
       <div
-        className="flex items-center gap-3 px-6 py-5 flex-shrink-0"
-        style={{ backgroundColor: '#4B286D', borderBottom: '1px solid rgba(255,255,255,0.12)' }}
+        className="px-6 py-5 border-b border-gray-200"
+        style={{ backgroundColor: '#4B286D' }}
       >
-        <div
-          className="w-8 h-8 flex items-center justify-center flex-shrink-0"
-          style={{ backgroundColor: 'rgba(255,255,255,0.15)' }}
-        >
-          <Sparkles className="w-4 h-4 text-white" />
-        </div>
-        <div>
-          <h2 className="text-white text-sm" style={{ fontWeight: 600, letterSpacing: '-0.01em' }}>
-            AI Compliance Assistant
-          </h2>
-          <p className="text-purple-300 text-xs">Powered by Grant Thornton advisory</p>
-        </div>
+        <h2 className="text-white tracking-tight">AI Compliance Assistant</h2>
       </div>
 
-      {/* Messages */}
-      <div className="flex-1 overflow-y-auto px-5 py-5 space-y-4">
-        {messages.map(msg => (
-          <div key={msg.id} className={`flex gap-3 ${msg.role === 'user' ? 'justify-end' : ''}`}>
-            {msg.role === 'ai' && (
-              <div
-                className="w-7 h-7 flex items-center justify-center flex-shrink-0 mt-0.5"
-                style={{ backgroundColor: '#4B286D' }}
-              >
-                <Sparkles className="w-3.5 h-3.5 text-white" />
-              </div>
-            )}
+      {/* Chat Window */}
+      <div className="flex-1 overflow-y-auto px-6 py-6 space-y-4">
+        {/* Greeting */}
+        <div className="bg-slate-50 rounded-lg p-4 border border-slate-200">
+          <div className="flex gap-3">
             <div
-              className="max-w-[85%] px-4 py-3 text-sm leading-relaxed"
-              style={{
-                backgroundColor: msg.role === 'ai' ? '#F7F5FA' : '#4B286D',
-                color: msg.role === 'ai' ? '#374151' : 'white',
-                border: msg.role === 'ai' ? '1px solid #e5e7eb' : 'none',
-                borderRadius: '0px',
-              }}
+              className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
+              style={{ backgroundColor: '#4B286D' }}
             >
-              {msg.text}
+              <span className="text-white">AI</span>
+            </div>
+            <div className="flex-1">
+              <p className="text-slate-700 leading-relaxed">{greeting}</p>
             </div>
           </div>
-        ))}
+        </div>
+
+        {/* Message history */}
+        {messages.map((m) =>
+          m.role === 'user' ? (
+            <div key={m.id} className="flex justify-end">
+              <div
+                className="max-w-[85%] px-4 py-3 rounded-lg text-white"
+                style={{ backgroundColor: '#4B286D' }}
+              >
+                <p className="leading-relaxed">{m.text}</p>
+              </div>
+            </div>
+          ) : (
+            <div key={m.id} className="bg-slate-50 rounded-lg p-4 border border-slate-200">
+              <div className="flex gap-3">
+                <div
+                  className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
+                  style={{ backgroundColor: '#4B286D' }}
+                >
+                  <span className="text-white">AI</span>
+                </div>
+                <div className="flex-1">
+                  <p className="text-slate-700 leading-relaxed">{m.text}</p>
+                </div>
+              </div>
+            </div>
+          ),
+        )}
+
+        {isTyping && (
+          <div className="bg-slate-50 rounded-lg p-4 border border-slate-200">
+            <div className="flex gap-3 items-center">
+              <div
+                className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
+                style={{ backgroundColor: '#4B286D' }}
+              >
+                <span className="text-white">AI</span>
+              </div>
+              <div className="flex gap-1">
+                <span className="w-2 h-2 rounded-full bg-slate-400 animate-bounce" style={{ animationDelay: '0ms' }} />
+                <span className="w-2 h-2 rounded-full bg-slate-400 animate-bounce" style={{ animationDelay: '150ms' }} />
+                <span className="w-2 h-2 rounded-full bg-slate-400 animate-bounce" style={{ animationDelay: '300ms' }} />
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Footer */}
-      <div
-        className="flex-shrink-0 px-5 py-4"
-        style={{ borderTop: '1px solid #e5e7eb', backgroundColor: '#FAFAFA' }}
-      >
-        {/* Quick prompts */}
-        <div className="flex flex-wrap gap-2 mb-3">
+      <div className="px-6 py-5 border-t border-gray-200 bg-slate-50">
+        {/* Quick Prompts */}
+        <div className="flex flex-wrap gap-2 mb-4">
           {quickPrompts.map((prompt, idx) => (
             <button
               key={idx}
-              onClick={() => setInput(prompt)}
-              className="px-3 py-1.5 text-xs transition-colors"
-              style={{
-                backgroundColor: 'white',
-                border: '1px solid #e5e7eb',
-                color: '#4B5563',
-                borderRadius: '0px',
-              }}
-              onMouseEnter={e => {
-                (e.currentTarget as HTMLButtonElement).style.borderColor = '#4B286D';
-                (e.currentTarget as HTMLButtonElement).style.color = '#4B286D';
-              }}
-              onMouseLeave={e => {
-                (e.currentTarget as HTMLButtonElement).style.borderColor = '#e5e7eb';
-                (e.currentTarget as HTMLButtonElement).style.color = '#4B5563';
-              }}
+              onClick={() => sendMessage(prompt)}
+              className="px-3 py-1.5 bg-white border border-slate-300 rounded-full text-slate-700 hover:border-teal-500 hover:bg-teal-50 transition-colors"
             >
               {prompt}
             </button>
           ))}
         </div>
 
-        {/* Input row */}
-        <div className="flex gap-2">
+        {/* Input Field */}
+        <form
+          className="flex gap-2"
+          onSubmit={(e) => {
+            e.preventDefault();
+            sendMessage(message);
+          }}
+        >
           <input
             type="text"
-            value={input}
-            onChange={e => setInput(e.target.value)}
-            onKeyDown={handleKey}
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
             placeholder="Ask a compliance question..."
-            className="flex-1 px-4 py-2.5 bg-white text-sm text-slate-700 outline-none transition-colors"
-            style={{ border: '1px solid #d1d5db', borderRadius: '0px' }}
-            onFocus={e => (e.target.style.borderColor = '#4B286D')}
-            onBlur={e => (e.target.style.borderColor = '#d1d5db')}
+            className="flex-1 px-4 py-2.5 bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
           />
           <button
-            onClick={handleSend}
-            className="w-10 h-10 flex items-center justify-center text-white flex-shrink-0 transition-opacity hover:opacity-90"
-            style={{ backgroundColor: '#4B286D', borderRadius: '0px' }}
+            type="submit"
+            className="px-4 py-2.5 rounded-lg text-white flex items-center justify-center hover:opacity-90 transition-opacity"
+            style={{ backgroundColor: '#4B286D' }}
           >
-            <Send className="w-4 h-4" />
+            <Send className="w-5 h-5" />
           </button>
-        </div>
+        </form>
       </div>
     </div>
   );

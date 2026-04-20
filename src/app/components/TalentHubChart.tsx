@@ -1,82 +1,64 @@
-import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
-  Legend, ResponsiveContainer
-} from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 const data = [
-  { name: 'Silicon Valley', engineering: 185, compliance: 45 },
-  { name: 'Austin', engineering: 135, compliance: 32 },
-  { name: 'Detroit', engineering: 98, compliance: 28 },
-];
-
-const CustomTooltip = ({ active, payload, label }: any) => {
-  if (active && payload && payload.length) {
-    return (
-      <div
-        className="bg-white p-3"
-        style={{ border: '1px solid #e5e7eb', fontFamily: 'Inter, sans-serif' }}
-      >
-        <p className="text-slate-700 text-xs mb-2" style={{ fontWeight: 600 }}>{label}</p>
-        {payload.map((entry: any) => (
-          <p key={entry.name} className="text-xs" style={{ color: entry.color }}>
-            {entry.name}: <span style={{ fontWeight: 500 }}>${entry.value}K</span>
-          </p>
-        ))}
-      </div>
-    );
+  {
+    name: 'Silicon Valley',
+    engineering: 185,
+    compliance: 45
+  },
+  {
+    name: 'Austin',
+    engineering: 135,
+    compliance: 32
+  },
+  {
+    name: 'Detroit',
+    engineering: 98,
+    compliance: 28
   }
-  return null;
-};
+];
 
 export function TalentHubChart() {
   return (
-    <div
-      className="bg-white p-6"
-      style={{ border: '1px solid #e5e7eb' }}
-    >
-      {/* Card header */}
-      <div className="flex items-center gap-3 mb-5">
-        <div className="h-[2px] w-5" style={{ backgroundColor: '#4B286D' }} />
-        <h3 className="text-slate-800" style={{ fontSize: '0.9rem', fontWeight: 600, letterSpacing: '-0.01em' }}>
-          Talent Hubs &amp; Cost Analysis
-        </h3>
-      </div>
+    <div className="bg-white rounded-xl border border-slate-200 p-6">
+      <h3 className="mb-4" style={{ color: '#4B286D' }}>Talent Hubs & Cost Analysis</h3>
 
-      <div style={{ height: '300px' }}>
+      <div style={{ height: '320px' }}>
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={data} margin={{ top: 10, right: 16, bottom: 10, left: 16 }} barCategoryGap="32%">
-            <CartesianGrid strokeDasharray="3 3" stroke="#F0EDF5" vertical={false} />
+          <BarChart data={data} margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#E2E8F0" />
             <XAxis
               dataKey="name"
-              tick={{ fill: '#9ca3af', fontSize: 11, fontFamily: 'Inter, sans-serif' }}
-              axisLine={false}
-              tickLine={false}
+              tick={{ fill: '#64748B' }}
+              axisLine={{ stroke: '#CBD5E1' }}
             />
             <YAxis
-              tick={{ fill: '#9ca3af', fontSize: 11, fontFamily: 'Inter, sans-serif' }}
-              axisLine={false}
-              tickLine={false}
-              tickFormatter={v => `$${v}K`}
+              tick={{ fill: '#64748B' }}
+              axisLine={{ stroke: '#CBD5E1' }}
+              label={{ value: 'Cost ($K/year)', angle: -90, position: 'insideLeft', fill: '#64748B' }}
             />
-            <Tooltip content={<CustomTooltip />} cursor={{ fill: '#F7F5FA' }} />
+            <Tooltip
+              contentStyle={{
+                backgroundColor: 'white',
+                border: '1px solid #E2E8F0',
+                borderRadius: '8px'
+              }}
+            />
             <Legend
-              wrapperStyle={{ paddingTop: '12px', fontFamily: 'Inter, sans-serif', fontSize: '11px' }}
-              iconType="square"
-              iconSize={10}
+              wrapperStyle={{ paddingTop: '10px' }}
+              iconType="rect"
             />
             <Bar
               dataKey="engineering"
               fill="#4B286D"
               name="Engineering Salaries"
-              radius={[0, 0, 0, 0]}
-              maxBarSize={36}
+              radius={[4, 4, 0, 0]}
             />
             <Bar
               dataKey="compliance"
-              fill="#00B0B9"
+              fill="#06B6D4"
               name="Compliance Costs"
-              radius={[0, 0, 0, 0]}
-              maxBarSize={36}
+              radius={[4, 4, 0, 0]}
             />
           </BarChart>
         </ResponsiveContainer>
