@@ -8,7 +8,6 @@ The **Zero Error** project offers an interactive, premium-designed dashboard and
 
 ## 📸 Screenshots
 
-*(Add your screenshots to the `public/screenshots/` folder to display them here)*
 
 <div align="center">
   <img src="./public/screenshots/dashboard.png" alt="Dashboard View" width="800"/>
